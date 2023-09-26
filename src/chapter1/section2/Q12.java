@@ -14,10 +14,16 @@ public class Q12 {
 
         transaction.sendTransaction(600);
 
-        System.out.println(STR. "\{ cl1.getName() } sent \{ transaction.getHowMuch() }$ to \{ cl2.getName() } at \{transaction.getWhen().toString()}." );
+        System.out.println(STR. "\{ cl1.getName() } sent \{ transaction.getHowMuch() }$ to \{ cl2.getName() } at \{ transaction.getWhen().toString() }." );
 
         System.out.println(STR. "Bank accounts: \{ transaction.getWho().getName() } has \{ transaction.getWho().getBankAccount() }$" +
                 STR. " and \{ transaction.getToWhom().getName() } has \{ transaction.getToWhom().getBankAccount() }$." );
+
+        Transaction microtransaction = new Transaction(cl1, cl2, new Date(5, 12, 2002));
+
+        microtransaction.sendTransaction(600);
+
+        System.out.println(transaction.equals(microtransaction));
 
     }
 
@@ -62,6 +68,19 @@ class Transaction {
         who.setBankAccount(who.getBankAccount() - howMuch);
         toWhom.setBankAccount(toWhom.getBankAccount() + howMuch);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (this == other) return true;
+        if (this.getClass() != other.getClass()) return false;
+
+        Transaction that = (Transaction) other;
+        return (this.who == that.who) &&
+                (this.toWhom == that.toWhom) &&
+                (this.howMuch == that.howMuch);
+    }
+
 }
 
 class Client {
