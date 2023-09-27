@@ -41,6 +41,12 @@ class Rational {
         this.denominator = denominator;
     }
 
+    public Rational plus(Rational b) {
+        long commonDeno = lcd(this.denominator, b.denominator);
+        long en = ((commonDeno / this.denominator) * this.enumerator) +
+                ((commonDeno / b.denominator) * b.enumerator);
+        return new Rational(en, commonDeno);
+    }
 
     public String getFraction() {
         return FMT. "\{ this.enumerator }/\{ this.denominator }" ;
