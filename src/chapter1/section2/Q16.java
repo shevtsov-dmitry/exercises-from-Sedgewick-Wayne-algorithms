@@ -3,18 +3,23 @@ package chapter1.section2;
 import static java.util.FormatProcessor.FMT;
 
 public class Q16 {
+
+    private static final Rational n1 = new Rational(1,0);
+    private static final Rational n2 = new Rational(1,0);
+    private static Rational n3 = new Rational(1,0);
+
     public static void main(String[] args) {
-//        Rational n1 = new Rational(3, 11);
-//        Rational n2 = new Rational(11, 9);
 
-        Rational n1 = new Rational(1, 33);
-        Rational n2 = new Rational(11, 3);
-        Rational n3 = n1.plus(n2);
 
+        log();
+    }
+
+
+    private static void log() {
         String log = STR. "\{ n1 } + \{ n2 } = \{ n3 }\n";
         log +=STR. "\{ n1.getFraction() } + \{ n2.getFraction() } = \{ n3.getFraction() }" ;
         if(Double.parseDouble(n3.toString()) >= 1) {
-            log += STR."\{n3.getIntAndFraction()}";
+            log += STR."\{ n3.getIntAndFraction()}";
 
             // TODO finish with parsing EX: 1(1/3)
         }
