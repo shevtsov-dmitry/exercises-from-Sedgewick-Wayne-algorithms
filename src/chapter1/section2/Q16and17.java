@@ -1,11 +1,10 @@
 package chapter1.section2;
 
 import java.util.Objects;
-import java.util.Random;
 
 import static java.util.FormatProcessor.FMT;
 
-public class Q16 {
+public class Q16and17 {
     private static Rational n1 = new Rational(1, 1);
     private static Rational n2 = new Rational(1, 1);
     private static Rational n3 = new Rational(1, 1);
@@ -117,6 +116,7 @@ class Rational {
         this.denominator = denominator;
     }
 
+    // * PLUS
     public Rational plus(Rational b) {
         long lcd = lcd(this.denominator, b.denominator);
         long en = (lcd / this.denominator) * this.enumerator +
@@ -124,7 +124,10 @@ class Rational {
         return new Rational(en, lcd);
     }
 
-    public String getFraction() {
+    // * MULTIPLY
+
+
+public String getFraction() {
         return STR. "\{ this.enumerator }/\{ this.denominator }" ;
     }
 
