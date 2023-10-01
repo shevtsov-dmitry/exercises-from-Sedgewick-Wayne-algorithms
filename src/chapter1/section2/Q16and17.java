@@ -1,6 +1,8 @@
 package chapter1.section2;
 
+import javax.swing.text.html.Option;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.FormatProcessor.FMT;
 
@@ -8,6 +10,7 @@ public class Q16and17 {
     private static Rational n1 = new Rational(1, 1);
     private static Rational n2 = new Rational(1, 1);
     private static Rational n3 = new Rational(1, 1);
+
     public static void main(String[] args) {
         // testing code. To make test available assertions should be available.
         // It can be achieved by adding -ea or --enable-assertions to VM options
@@ -31,24 +34,28 @@ public class Q16and17 {
         n3 = n1.plus(n2);
         plusResult = "3/3";
         testExpression(plusResult, OperationType.PLUS);
+        testExpression(multiplyResult, OperationType.MULTIPLY);
 
-        n1 = new Rational(34,4234);
-        n2 = new Rational(34,1);
+        n1 = new Rational(34, 4234);
+        n2 = new Rational(34, 1);
         n3 = n1.plus(n2);
         plusResult = "143990/4234";
         testExpression(plusResult, OperationType.PLUS);
+        testExpression(multiplyResult, OperationType.MULTIPLY);
 
         n1 = new Rational(0, 1);
         n2 = new Rational(3, 10);
         n3 = n1.plus(n2);
         plusResult = "3/10";
         testExpression(plusResult, OperationType.PLUS);
+        testExpression(multiplyResult, OperationType.MULTIPLY);
 
         n1 = new Rational(-23, 423);
         n2 = new Rational(32, 1);
         n3 = n1.plus(n2);
         plusResult = "13513/423";
         testExpression(plusResult, OperationType.PLUS);
+        testExpression(multiplyResult, OperationType.MULTIPLY);
 
     }
 
@@ -125,11 +132,16 @@ class Rational {
     }
 
     // * MULTIPLY
+    public Rational multiply(Rational b) {
+        return new Rational(this.enumerator * b.enumerator, this.denominator * b.denominator);
+    }
 
-
-public String getFraction() {
+    public String getFraction() {
         return STR. "\{ this.enumerator }/\{ this.denominator }" ;
     }
+
+
+
 
     public String getIntAndFraction() {
         long partEnumerator = this.enumerator % this.denominator;
@@ -156,20 +168,29 @@ public String getFraction() {
     }
 
     public static long lcd(long a, long b) {
-        if(a < b){
+        if (a < b) {
             long holdB = b;
             b = a;
             a = holdB;
-        }
-        if (a == b) return a;
+        } else if (a == b)
+            return a;
+
+        final Optional<Long> commonDivisor = findCommonDivisor(a, b);
+        if (commonDivisor.isPresent())
+            return commonDivisor.get();
+        else
+            return a * b;
+    }
+
+    private static Optional<Long> findCommonDivisor(long a, long b) {
         for (long i = 1; i <= a / 2; i++) {
             if ((double) a / i == b) {
-                return i;
+                return Optional.of(i);
             } else if (i < b) {
                 break;
             }
         }
-        return a * b;
+        return Optional.empty();
     }
 
 
