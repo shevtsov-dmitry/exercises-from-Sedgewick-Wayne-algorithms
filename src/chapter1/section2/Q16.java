@@ -1,31 +1,65 @@
 package chapter1.section2;
 
+import java.util.Objects;
+
 import static java.util.FormatProcessor.FMT;
 
 public class Q16 {
 
-    private static final Rational n1 = new Rational(1,0);
-    private static final Rational n2 = new Rational(1,0);
-    private static Rational n3 = new Rational(1,0);
+    private static Rational n1 = new Rational(1, 1);
+    private static Rational n2 = new Rational(1, 1);
+    private static Rational n3 = new Rational(1, 1);
 
     public static void main(String[] args) {
 
-
+        // testing code. To make test available assertions should be available.
+        // It can be achieved by adding -ea or --enable-assertions to VM options
         log();
     }
 
+    //    TESTS
+
+
+    // test cases based on assertions.
+    public void testExpression(String result, OperationType operationType) {
+        switch (operationType) {
+            case PLUS -> {
+                assert Objects.equals(n3.getFraction(), result) :
+                        STR. "\{ n1.getFraction() } + \{ n2.getFraction() } = \{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+            }
+            case MINUS -> {
+                assert Objects.equals(n3.getFraction(), result) :
+                        STR. "\{ n1.getFraction() } - \{ n2.getFraction() } = \{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+            }
+            case DIVIDE -> {
+                assert Objects.equals(n3.getFraction(), result) :
+                        STR. "\{ n1.getFraction() } / \{ n2.getFraction() } = \{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+            }
+            case MULTIPLY -> {
+                assert Objects.equals(n3.getFraction(), result) :
+                        STR. "\{ n1.getFraction() } * \{ n2.getFraction() } = \{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+            }
+        }
+    }
 
     private static void log() {
-        String log = STR. "\{ n1 } + \{ n2 } = \{ n3 }\n";
-        log +=STR. "\{ n1.getFraction() } + \{ n2.getFraction() } = \{ n3.getFraction() }" ;
-        if(Double.parseDouble(n3.toString()) >= 1) {
-            log += STR."\{ n3.getIntAndFraction()}";
+        String log = STR. "\{ n1 } + \{ n2 } = \{ n3 }\n" ;
+        log += STR. "\{ n1.getFraction() } + \{ n2.getFraction() } = \{ n3.getFraction() }" ;
+        if (Double.parseDouble(n3.toString()) >= 1) {
+            log += STR. "\{ n3.getIntAndFraction() }" ;
 
             // TODO finish with parsing EX: 1(1/3)
         }
-        log+= STR."\n";
+        log += STR."\n";
         System.out.println(log);
     }
+}
+
+enum OperationType {
+    PLUS,
+    MINUS,
+    DIVIDE,
+    MULTIPLY
 }
 
 class Rational {
@@ -50,6 +84,7 @@ class Rational {
         long commonDeno = lcd(this.denominator, b.denominator);
         long en = ((commonDeno / this.denominator) * this.enumerator) +
                 ((commonDeno / b.denominator) * b.enumerator);
+        System.out.println(en);
         return new Rational(en, commonDeno);
     }
 
@@ -57,9 +92,9 @@ class Rational {
         return FMT. "\{ this.enumerator }/\{ this.denominator }" ;
     }
 
-    public String getIntAndFraction(){
+    public String getIntAndFraction() {
         long partEnumerator = this.enumerator % this.denominator;
-        return STR."\{this.enumerator/this.denominator}(\{partEnumerator}/\{this.denominator})";
+        return STR. "\{ this.enumerator / this.denominator }(\{ partEnumerator }/\{ this.denominator })" ;
     }
 
     public long getEnumerator() {
@@ -82,10 +117,13 @@ class Rational {
     }
 
     public static long lcd(long a, long b) {
+        if (a == b) return a * 2;
         for (long i = 1; i <= a / 2; i++) {
             if ((double) a / i == b)
                 return i;
         }
         return a * b;
     }
+
+
 }
