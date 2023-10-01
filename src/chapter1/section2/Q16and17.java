@@ -1,8 +1,8 @@
 package chapter1.section2;
 
-import javax.swing.text.html.Option;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static java.util.FormatProcessor.FMT;
 
@@ -23,39 +23,40 @@ public class Q16and17 {
         String minusResult = "";
         String multiplyResult = "";
         String divideResult = "";
-        String[] allResults = new String[4];
-        allResults[0] = plusResult;
-        allResults[1] = minusResult;
-        allResults[2] = multiplyResult;
-        allResults[3] = divideResult;
+//        String[] allResults = new String[4];
+//        allResults[0] = plusResult;
+//        allResults[1] = minusResult;
+//        allResults[2] = multiplyResult;
+//        allResults[3] = divideResult;
 
         n1 = new Rational(1, 3);
         n2 = new Rational(2, 3);
         n3 = n1.plus(n2);
         plusResult = "3/3";
         testExpression(plusResult, OperationType.PLUS);
-        testExpression(multiplyResult, OperationType.MULTIPLY);
+//        testExpression(multiplyResult, OperationType.MULTIPLY);
 
         n1 = new Rational(34, 4234);
         n2 = new Rational(34, 1);
         n3 = n1.plus(n2);
+        System.out.println(n3.getFraction());
         plusResult = "143990/4234";
         testExpression(plusResult, OperationType.PLUS);
-        testExpression(multiplyResult, OperationType.MULTIPLY);
+//        testExpression(multiplyResult, OperationType.MULTIPLY);
 
         n1 = new Rational(0, 1);
         n2 = new Rational(3, 10);
         n3 = n1.plus(n2);
         plusResult = "3/10";
         testExpression(plusResult, OperationType.PLUS);
-        testExpression(multiplyResult, OperationType.MULTIPLY);
+//        testExpression(multiplyResult, OperationType.MULTIPLY);
 
         n1 = new Rational(-23, 423);
         n2 = new Rational(32, 1);
         n3 = n1.plus(n2);
         plusResult = "13513/423";
         testExpression(plusResult, OperationType.PLUS);
-        testExpression(multiplyResult, OperationType.MULTIPLY);
+//        testExpression(multiplyResult, OperationType.MULTIPLY);
 
     }
 
@@ -109,6 +110,7 @@ class Rational {
 
     private final long enumerator;
     private final long denominator;
+    private static AtomicLong atomicDivisor;
 
     public Rational(long enumerator) {
         this.enumerator = enumerator;
@@ -137,10 +139,14 @@ class Rational {
     }
 
     public String getFraction() {
-        return STR. "\{ this.enumerator }/\{ this.denominator }" ;
+        long en = this.enumerator;
+        long de = this.denominator;
+        // reduce fraction rules
+        long commonDivisor = findCommonDivisorForBothNumbers(Math.min(en, de), Math.max(en, de), de);
+        en /= commonDivisor;
+        de /= commonDivisor;
+        return STR. "\{ en }/\{ de }" ;
     }
-
-
 
 
     public String getIntAndFraction() {
@@ -183,7 +189,7 @@ class Rational {
     }
 
     private static Optional<Long> findCommonDivisor(long a, long b) {
-        for (long i = 1; i <= a / 2; i++) {
+        for (long i = a / 2 + 1; i > 0; i--) { // backwards
             if ((double) a / i == b) {
                 return Optional.of(i);
             } else if (i < b) {
@@ -191,6 +197,17 @@ class Rational {
             }
         }
         return Optional.empty();
+    }
+
+
+    private static long findCommonDivisorForBothNumbers(long min, long max, long de) {
+        if (min == 1) {
+            return 1;
+        } else if ((double) max / min % 2 == 1 && (double) de / min % 2 == 1) {
+            return min;
+        } else {
+            return findCommonDivisorForBothNumbers(min - 1, max, de);
+        }
     }
 
 
