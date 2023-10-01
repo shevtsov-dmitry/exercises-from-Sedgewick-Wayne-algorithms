@@ -32,22 +32,21 @@ public class Q16and17 {
         n1 = new Rational(1, 3);
         n2 = new Rational(2, 3);
         n3 = n1.plus(n2);
-        plusResult = "3/3";
+        plusResult = "1";
         testExpression(plusResult, OperationType.PLUS);
 //        testExpression(multiplyResult, OperationType.MULTIPLY);
 
         n1 = new Rational(34, 4234);
         n2 = new Rational(34, 1);
         n3 = n1.plus(n2);
-        System.out.println(n3.getFraction());
-        plusResult = "143990/4234";
+        plusResult = "71995/2117";
         testExpression(plusResult, OperationType.PLUS);
 //        testExpression(multiplyResult, OperationType.MULTIPLY);
 
         n1 = new Rational(0, 1);
         n2 = new Rational(3, 10);
         n3 = n1.plus(n2);
-        plusResult = "3/10";
+        plusResult = "1/5";
         testExpression(plusResult, OperationType.PLUS);
 //        testExpression(multiplyResult, OperationType.MULTIPLY);
 
@@ -64,24 +63,24 @@ public class Q16and17 {
     private static void testExpression(String result, OperationType operationType) {
         switch (operationType) {
             case PLUS -> {
-                assert Objects.equals(n3.getFraction(), result) :
-                        STR. "\{ n1.getFraction() } + \{ n2.getFraction() } = " +
-                                STR. "\{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+                assert Objects.equals(n3.getResult(), result) :
+                        STR. "\{ n1.getResult() } + \{ n2.getResult() } = " +
+                                STR. "\{ n3.getResult() } (\{ n3 }), but should be equal to \{ result }" ;
             }
             case MINUS -> {
-                assert Objects.equals(n3.getFraction(), result) :
-                        STR. "\{ n1.getFraction() } - \{ n2.getFraction() } = " +
-                                STR. "\{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+                assert Objects.equals(n3.getResult(), result) :
+                        STR. "\{ n1.getResult() } - \{ n2.getResult() } = " +
+                                STR. "\{ n3.getResult() } (\{ n3 }), but should be equal to \{ result }" ;
             }
             case DIVIDE -> {
-                assert Objects.equals(n3.getFraction(), result) :
-                        STR. "\{ n1.getFraction() } / \{ n2.getFraction() } = " +
-                                STR. "\{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+                assert Objects.equals(n3.getResult(), result) :
+                        STR. "\{ n1.getResult() } / \{ n2.getResult() } = " +
+                                STR. "\{ n3.getResult() } (\{ n3 }), but should be equal to \{ result }" ;
             }
             case MULTIPLY -> {
-                assert Objects.equals(n3.getFraction(), result) :
-                        STR. "\{ n1.getFraction() } * \{ n2.getFraction() } = " +
-                                STR. "\{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+                assert Objects.equals(n3.getResult(), result) :
+                        STR. "\{ n1.getResult() } * \{ n2.getResult() } = " +
+                                STR. "\{ n3.getResult() } (\{ n3 }), but should be equal to \{ result }" ;
             }
         }
     }
@@ -148,6 +147,13 @@ class Rational {
         return STR. "\{ en }/\{ de }" ;
     }
 
+     public String getResult(){
+        if(this.enumerator == this.denominator)
+            return "1";
+        else if(this.enumerator == 0)
+            return "0";
+         return getFraction();
+     }
 
     public String getIntAndFraction() {
         long partEnumerator = this.enumerator % this.denominator;
