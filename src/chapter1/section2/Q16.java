@@ -1,20 +1,18 @@
 package chapter1.section2;
 
 import java.util.Objects;
+import java.util.Random;
 
 import static java.util.FormatProcessor.FMT;
 
 public class Q16 {
-
     private static Rational n1 = new Rational(1, 1);
     private static Rational n2 = new Rational(1, 1);
     private static Rational n3 = new Rational(1, 1);
-
     public static void main(String[] args) {
-
         // testing code. To make test available assertions should be available.
         // It can be achieved by adding -ea or --enable-assertions to VM options
-        log();
+        checkPreparedInstances();
     }
 
     //    TESTS
@@ -32,43 +30,51 @@ public class Q16 {
         n1 = new Rational(1, 3);
         n2 = new Rational(2, 3);
         n3 = n1.plus(n2);
-        plusResult = "6/6";
+        plusResult = "3/3";
+        testExpression(plusResult, OperationType.PLUS);
 
-        n1 = new Rational(534, 230);
-        n2 = new Rational(409232, 2582);
+        n1 = new Rational(34,4234);
+        n2 = new Rational(34,1);
         n3 = n1.plus(n2);
-        plusResult = "23875537/148465";
+        plusResult = "143990/4234";
+        testExpression(plusResult, OperationType.PLUS);
 
         n1 = new Rational(0, 1);
         n2 = new Rational(3, 10);
         n3 = n1.plus(n2);
-        plusResult = "0/1";
+        plusResult = "3/10";
+        testExpression(plusResult, OperationType.PLUS);
 
         n1 = new Rational(-23, 423);
         n2 = new Rational(32, 1);
         n3 = n1.plus(n2);
-        plusResult = "135123/423";
+        plusResult = "13513/423";
+        testExpression(plusResult, OperationType.PLUS);
 
     }
 
     // test cases based on assertions.
-    public void testExpression(String result, OperationType operationType) {
+    private static void testExpression(String result, OperationType operationType) {
         switch (operationType) {
             case PLUS -> {
                 assert Objects.equals(n3.getFraction(), result) :
-                        STR. "\{ n1.getFraction() } + \{ n2.getFraction() } = \{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+                        STR. "\{ n1.getFraction() } + \{ n2.getFraction() } = " +
+                                STR. "\{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
             }
             case MINUS -> {
                 assert Objects.equals(n3.getFraction(), result) :
-                        STR. "\{ n1.getFraction() } - \{ n2.getFraction() } = \{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+                        STR. "\{ n1.getFraction() } - \{ n2.getFraction() } = " +
+                                STR. "\{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
             }
             case DIVIDE -> {
                 assert Objects.equals(n3.getFraction(), result) :
-                        STR. "\{ n1.getFraction() } / \{ n2.getFraction() } = \{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+                        STR. "\{ n1.getFraction() } / \{ n2.getFraction() } = " +
+                                STR. "\{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
             }
             case MULTIPLY -> {
                 assert Objects.equals(n3.getFraction(), result) :
-                        STR. "\{ n1.getFraction() } * \{ n2.getFraction() } = \{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
+                        STR. "\{ n1.getFraction() } * \{ n2.getFraction() } = " +
+                                STR. "\{ n3.getFraction() } (\{ n3 }), but should be equal to \{ result }" ;
             }
         }
     }
@@ -112,15 +118,14 @@ class Rational {
     }
 
     public Rational plus(Rational b) {
-        long commonDeno = lcd(this.denominator, b.denominator);
-        long en = ((commonDeno / this.denominator) * this.enumerator) +
-                ((commonDeno / b.denominator) * b.enumerator);
-        System.out.println(en);
-        return new Rational(en, commonDeno);
+        long lcd = lcd(this.denominator, b.denominator);
+        long en = (lcd / this.denominator) * this.enumerator +
+                (lcd / b.denominator) * b.enumerator;
+        return new Rational(en, lcd);
     }
 
     public String getFraction() {
-        return FMT. "\{ this.enumerator }/\{ this.denominator }" ;
+        return STR. "\{ this.enumerator }/\{ this.denominator }" ;
     }
 
     public String getIntAndFraction() {
@@ -148,10 +153,18 @@ class Rational {
     }
 
     public static long lcd(long a, long b) {
-        if (a == b) return a * 2;
+        if(a < b){
+            long holdB = b;
+            b = a;
+            a = holdB;
+        }
+        if (a == b) return a;
         for (long i = 1; i <= a / 2; i++) {
-            if ((double) a / i == b)
+            if ((double) a / i == b) {
                 return i;
+            } else if (i < b) {
+                break;
+            }
         }
         return a * b;
     }
