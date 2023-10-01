@@ -18,7 +18,20 @@ public class Q16 {
     }
 
     //    TESTS
+    private static void checkPreparedInstances() {
+        String plusResult = "";
+        String minusResult = "";
+        String multiplyResult = "";
+        String divideResult = "";
+        String[] allResults = new String[4];
+        allResults[0] = plusResult;
+        allResults[1] = minusResult;
+        allResults[2] = multiplyResult;
+        allResults[3] = divideResult;
 
+
+
+    }
 
     // test cases based on assertions.
     public void testExpression(String result, OperationType operationType) {
