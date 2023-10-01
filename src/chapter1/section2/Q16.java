@@ -29,7 +29,25 @@ public class Q16 {
         allResults[2] = multiplyResult;
         allResults[3] = divideResult;
 
+        n1 = new Rational(1, 3);
+        n2 = new Rational(2, 3);
+        n3 = n1.plus(n2);
+        plusResult = "6/6";
 
+        n1 = new Rational(534, 230);
+        n2 = new Rational(409232, 2582);
+        n3 = n1.plus(n2);
+        plusResult = "23875537/148465";
+
+        n1 = new Rational(0, 1);
+        n2 = new Rational(3, 10);
+        n3 = n1.plus(n2);
+        plusResult = "0/1";
+
+        n1 = new Rational(-23, 423);
+        n2 = new Rational(32, 1);
+        n3 = n1.plus(n2);
+        plusResult = "135123/423";
 
     }
 
