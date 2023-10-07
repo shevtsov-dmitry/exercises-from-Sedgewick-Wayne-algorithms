@@ -159,7 +159,13 @@ class Rational {
         return new Rational(this.enumerator * b.denominator, this.enumerator * b.enumerator);
     }
 
-
+    // * MINUS
+    public Rational minus(Rational b) {
+        long lcd = lcd(this.denominator, b.denominator);
+        long en = (lcd / this.denominator) * this.enumerator -
+                (lcd / b.denominator) * b.enumerator;
+        return new Rational(en, lcd);
+    }
 
 
     public String getFraction() {
