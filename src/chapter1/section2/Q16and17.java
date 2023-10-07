@@ -74,7 +74,7 @@ public class Q16and17 {
         testExpression(plusResult, OperationType.PLUS);
         testExpression(multiplyResult, OperationType.MULTIPLY);
         testExpression(minusResult, OperationType.MINUS);
-        testExpression(divideResult,OperationType.DIVIDE);
+        testExpression(divideResult, OperationType.DIVIDE);
     }
 
     // test cases based on assertions.
@@ -121,6 +121,7 @@ enum OperationType {
     DIVIDE,
     MULTIPLY
 }
+
 class Rational {
 
     private final long enumerator;
@@ -154,6 +155,12 @@ class Rational {
     }
 
     // * DIVIDE
+    public Rational divide(Rational b) {
+        return new Rational(this.enumerator * b.denominator, this.enumerator * b.enumerator);
+    }
+
+
+
 
     public String getFraction() {
         long en = this.enumerator;
@@ -168,22 +175,21 @@ class Rational {
         return STR. "\{ en }/\{ de }" ;
     }
 
-     public String getResult(){
-        if(this.enumerator == this.denominator)
+    public String getResult() {
+        if (this.enumerator == this.denominator)
             return "1";
-        else if(this.enumerator == 0)
+        else if (this.enumerator == 0)
             return "0";
-         return getFraction();
-     }
+        return getFraction();
+    }
 
     public String getMixedFraction() {
-        if(this.enumerator > this.denominator){
+        if (this.enumerator > this.denominator) {
             long partEnumerator = this.enumerator % this.denominator;
             long difference = this.enumerator * partEnumerator - this.denominator;
-            return STR."\{partEnumerator} (\{difference}/\{this.denominator})";
-        }
-        else {
-            return STR."Impossible to get mixed fraction with \{getFraction()}";
+            return STR. "\{ partEnumerator } (\{ difference }/\{ this.denominator })" ;
+        } else {
+            return STR. "Impossible to get mixed fraction with \{ getFraction() }" ;
         }
     }
 
