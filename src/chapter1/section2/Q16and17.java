@@ -175,6 +175,8 @@ class Rational {
         long commonDivisor = findCommonDivisorForBothNumbers(Math.min(en, de), Math.max(en, de), de);
         en /= commonDivisor;
         de /= commonDivisor;
+        System.out.println(STR. "en: \{ enumerator } de: \{ denominator } commonDivisor: \{ commonDivisor } \n then en: \{ en } de: \{ de }" );
+
         return STR. "\{ en }/\{ de }" ;
     }
 
