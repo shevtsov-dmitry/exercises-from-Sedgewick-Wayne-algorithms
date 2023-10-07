@@ -20,43 +20,61 @@ public class Q16and17 {
     //    TESTS
     private static void checkPreparedInstances() {
         String plusResult = "";
-        String minusResult = "";
         String multiplyResult = "";
+        String minusResult = "";
         String divideResult = "";
-//        String[] allResults = new String[4];
-//        allResults[0] = plusResult;
-//        allResults[1] = minusResult;
-//        allResults[2] = multiplyResult;
-//        allResults[3] = divideResult;
 
+        // 1/3 2/3
         n1 = new Rational(1, 3);
         n2 = new Rational(2, 3);
         n3 = n1.plus(n2);
-        plusResult = "1";
-        testExpression(plusResult, OperationType.PLUS);
-//        testExpression(multiplyResult, OperationType.MULTIPLY);
 
+        plusResult = "1";
+        multiplyResult = "2/9";
+        minusResult = "-1/3";
+        divideResult = "1/2";
+        testOperations(plusResult, multiplyResult, minusResult, divideResult);
+
+        // 34/4234 34
         n1 = new Rational(34, 4234);
         n2 = new Rational(34, 1);
         n3 = n1.plus(n2);
-        plusResult = "71995/2117";
-        testExpression(plusResult, OperationType.PLUS);
-//        testExpression(multiplyResult, OperationType.MULTIPLY);
 
+        plusResult = "71995/2117";
+        multiplyResult = "578/2117";
+        minusResult = "-71961/2117";
+        divideResult = "1/4234";
+        testOperations(plusResult, multiplyResult, minusResult, divideResult);
+
+        // 0/1 3/10
         n1 = new Rational(0, 1);
         n2 = new Rational(3, 10);
         n3 = n1.plus(n2);
-        plusResult = "1/5";
-        testExpression(plusResult, OperationType.PLUS);
-//        testExpression(multiplyResult, OperationType.MULTIPLY);
 
+        plusResult = "1/5";
+        multiplyResult = "0";
+        minusResult = "-3/10";
+        divideResult = "0";
+        testOperations(plusResult, multiplyResult, minusResult, divideResult);
+
+        // -23/423 32/1
         n1 = new Rational(-23, 423);
         n2 = new Rational(32, 1);
         n3 = n1.plus(n2);
-        plusResult = "13513/423";
-        testExpression(plusResult, OperationType.PLUS);
-//        testExpression(multiplyResult, OperationType.MULTIPLY);
 
+        plusResult = "13513/423";
+        multiplyResult = "-736/423";
+        minusResult = "-13559/423";
+        divideResult = "-23/13536";
+        testOperations(plusResult, multiplyResult, minusResult, divideResult);
+
+    }
+
+    private static void testOperations(String plusResult, String multiplyResult, String minusResult, String divideResult) {
+        testExpression(plusResult, OperationType.PLUS);
+        testExpression(multiplyResult, OperationType.MULTIPLY);
+        testExpression(minusResult, OperationType.MINUS);
+        testExpression(divideResult,OperationType.DIVIDE);
     }
 
     // test cases based on assertions.
@@ -89,9 +107,8 @@ public class Q16and17 {
         String log = STR. "\{ n1 } + \{ n2 } = \{ n3 }\n" ;
         log += STR. "\{ n1.getFraction() } + \{ n2.getFraction() } = \{ n3.getFraction() }" ;
         if (Double.parseDouble(n3.toString()) >= 1) {
-            log += STR. "\{ n3.getIntAndFraction() }" ;
+            log += STR. "\{ n3.getMixedFraction() }" ;
 
-            // TODO finish with parsing EX: 1(1/3)
         }
         log += STR."\n";
         System.out.println(log);
@@ -104,7 +121,6 @@ enum OperationType {
     DIVIDE,
     MULTIPLY
 }
-
 class Rational {
 
     private final long enumerator;
@@ -137,11 +153,16 @@ class Rational {
         return new Rational(this.enumerator * b.enumerator, this.denominator * b.denominator);
     }
 
+    // * DIVIDE
+
     public String getFraction() {
         long en = this.enumerator;
         long de = this.denominator;
         // reduce fraction rules
         long commonDivisor = findCommonDivisorForBothNumbers(Math.min(en, de), Math.max(en, de), de);
+        System.out.println("en = " + en);
+        System.out.println("de = " + de);
+        System.out.println("commonDivisor = " + commonDivisor);
         en /= commonDivisor;
         de /= commonDivisor;
         return STR. "\{ en }/\{ de }" ;
@@ -155,9 +176,15 @@ class Rational {
          return getFraction();
      }
 
-    public String getIntAndFraction() {
-        long partEnumerator = this.enumerator % this.denominator;
-        return STR. "\{ this.enumerator / this.denominator }(\{ partEnumerator }/\{ this.denominator })" ;
+    public String getMixedFraction() {
+        if(this.enumerator > this.denominator){
+            long partEnumerator = this.enumerator % this.denominator;
+            long difference = this.enumerator * partEnumerator - this.denominator;
+            return STR."\{partEnumerator} (\{difference}/\{this.denominator})";
+        }
+        else {
+            return STR."Impossible to get mixed fraction with \{getFraction()}";
+        }
     }
 
     public long getEnumerator() {
@@ -207,9 +234,10 @@ class Rational {
 
 
     private static long findCommonDivisorForBothNumbers(long min, long max, long de) {
+//        System.out.println(STR. "\{max} and \{ de } and \{ min }" );
         if (min == 1) {
             return 1;
-        } else if ((double) max / min % 2 == 1 && (double) de / min % 2 == 1) {
+        } else if ((double) max / min % 2 == 1 && (double) de / min % 2 == 1) { // for example with 4 and 2 here is 2 / 2 % 2 != 1
             return min;
         } else {
             return findCommonDivisorForBothNumbers(min - 1, max, de);
