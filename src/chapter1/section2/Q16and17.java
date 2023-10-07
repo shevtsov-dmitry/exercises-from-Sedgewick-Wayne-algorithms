@@ -156,7 +156,7 @@ class Rational {
 
     // * DIVIDE
     public Rational divide(Rational b) {
-        return new Rational(this.enumerator * b.denominator, this.enumerator * b.enumerator);
+        return new Rational(this.enumerator * b.denominator, this.denominator * b.enumerator);
     }
 
     // * MINUS
@@ -173,9 +173,6 @@ class Rational {
         long de = this.denominator;
         // reduce fraction rules
         long commonDivisor = findCommonDivisorForBothNumbers(Math.min(en, de), Math.max(en, de), de);
-        System.out.println("en = " + en);
-        System.out.println("de = " + de);
-        System.out.println("commonDivisor = " + commonDivisor);
         en /= commonDivisor;
         de /= commonDivisor;
         return STR. "\{ en }/\{ de }" ;
@@ -247,7 +244,7 @@ class Rational {
 
     private static long findCommonDivisorForBothNumbers(long min, long max, long de) {
 //        System.out.println(STR. "\{max} and \{ de } and \{ min }" );
-        if (min == 1) {
+        if (min <= 1) {
             return 1;
         } else if ((double) max / min % 2 == 1 && (double) de / min % 2 == 1) { // for example with 4 and 2 here is 2 / 2 % 2 != 1
             return min;
