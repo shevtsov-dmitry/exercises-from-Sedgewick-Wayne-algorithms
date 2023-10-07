@@ -27,7 +27,6 @@ public class Q16and17 {
         // 1/3 2/3
         n1 = new Rational(1, 3);
         n2 = new Rational(2, 3);
-        n3 = n1.plus(n2);
 
         plusResult = "1";
         multiplyResult = "2/9";
@@ -38,7 +37,6 @@ public class Q16and17 {
         // 34/4234 34
         n1 = new Rational(34, 4234);
         n2 = new Rational(34, 1);
-        n3 = n1.plus(n2);
 
         plusResult = "71995/2117";
         multiplyResult = "578/2117";
@@ -49,7 +47,6 @@ public class Q16and17 {
         // 0/1 3/10
         n1 = new Rational(0, 1);
         n2 = new Rational(3, 10);
-        n3 = n1.plus(n2);
 
         plusResult = "1/5";
         multiplyResult = "0";
@@ -60,7 +57,6 @@ public class Q16and17 {
         // -23/423 32/1
         n1 = new Rational(-23, 423);
         n2 = new Rational(32, 1);
-        n3 = n1.plus(n2);
 
         plusResult = "13513/423";
         multiplyResult = "-736/423";
@@ -71,9 +67,13 @@ public class Q16and17 {
     }
 
     private static void testOperations(String plusResult, String multiplyResult, String minusResult, String divideResult) {
+        n3 = n1.plus(n2);
         testExpression(plusResult, OperationType.PLUS);
+        n3 = n1.multiply(n2);
         testExpression(multiplyResult, OperationType.MULTIPLY);
+        n3 = n1.minus(n2);
         testExpression(minusResult, OperationType.MINUS);
+        n3 = n1.divide(n2);
         testExpression(divideResult, OperationType.DIVIDE);
     }
 
